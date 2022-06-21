@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="template"
+	xmlns:sec=https://www.thymeleaf.org/thymeleaf-extras-springsecurity5>
+<link rel="stylesheet" type="text/css"
+	href="webjars/bootstrap/4.3.1/css/bootstrap.min.css" />
+<head>
+<meta charset="utf-8">
+<title>Liste des Reclamations</title>
+</head>
+<body>
+	<div layout:fragment="Mycontent">
+		<div class="container mt-5">
+			<div class="card">
+				<div class="card-header">Liste des Reclamations</div>
+				<div class="card-body">
+<div class="container">
+  
+  <!-- Trigger the modal with a button -->
+  <button sec:authorize="hasRole('ENSEIGNANT')" type="button"   class="btn btn-warning float-right"  data-toggle="modal" data-target="#myModal">ADD</button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">ADD RECLAMATION</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+       
+        </div>
+        <div class="modal-body">
+          <form th:action="@{saveReclamation}" method="post">
+					<div class="form-group">
+<label class="control-label" hidden>ID Parcours :</label>
+<input type="hidden" name="idrec" class="form-control" />
+</div>
+<div class="form-group">
+<label class="control-label">type_rec :</label>
+<input type="text" name="type_rec" class="form-control"/>
+
+</div>
+<div class="form-group">
+<label class="control-label">priorite :</label>
+<input type="text" name="priorite" class="form-control"/>
+
+</div>
+
+<div class="form-group">
+<label class="control-label">description :</label>
+<input type="text" name="description" class="form-control"/>
+
+</div>
+
+<div class="form-group">
+							<label class="control-label">Salle :</label> 
+							<select    type="text" name="salle" class="form-control" >
+								<option th:each="c:${salles}" th:if="${mode=='edit'}"
+									th:value="${c.ids}" th:text="${c.ids}"
+									th:selected="${ c.ids==reclamation.salle.ids}"></option>
+
+								<option th:each="c:${salles}" th:if="${mode=='new'}"
+									th:value="${c.ids}" th:text="${c.ids  +  c.type}"></option>
+							</select>
+						</div>
+<div>
+</div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger " data-dismiss="modal">Cancel</button>
+
+        <button type="submit" class="btn btn-warning float-right ">Ajouter</button> 
+
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+					
+					<table class="table table-striped">
+						<tr>
+							<th>idrec</th>
+							<th>type_rec</th>
+							<th>salle</th>
+							<th> priorite </th>
+							<th> description </th>
+							<th> etat </th>
+							
+							
+						</tr>
+						<tr th:each="s:${Reclamations}">
+							<td th:text="${s.idrec}"></td>
+								<td th:text="${s.type_rec}"></td> 
+								<td th:text="${s.salle.type}">
+							
+							<td th:text="${s.priorite}"></td>
+							<td th:text="${s.description}"></td>
+							<td     th:text="${s.etat}"></td>
+							
+							
+							
+							
+						
+
+							<td sec:authorize="hasAnyRole('TECHNICIEN','ADMIN')"><a
+								class="btn btn-danger"
+								onclick="return confirm('Etes-vous sûr ?')"
+								th:href="@{supprimerReclamation(id=${s.idrec},
+                                page=${currentPage},size=${size})}">Supprimer</a></td>
+                                
+                                <td sec:authorize="hasAnyRole('TECHNICIEN','ADMIN')"   ><a class="btn btn-success"th:href="@{modifierRec(id=${s.idrec})}">accepter</a> </td>
+                                <td sec:authorize="hasAnyRole('TECHNICIEN','ADMIN')" ><a class="btn btn-info"th:href="@{refuserRec(id=${s.idrec})}">refuser</a> </td>
+
+						</tr>
+					</table>
+					<ul class="nav nav-pills">
+						<li th:each="page,status:${pages}"><a
+							th:class="${status.index==currentPage?'btn btn-primary':'btn' }"
+							th:href="@{ ListeReclamations(page=${status.index}, size=${size} ) }"
+							th:text="${status.index }"></a></li>
+					</ul>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

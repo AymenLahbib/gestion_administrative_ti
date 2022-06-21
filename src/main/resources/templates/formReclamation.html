@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="template">
+<link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" />
+
+<head>
+	<meta charset="utf-8">
+	<title>Ajout Reclamations</title>
+</head>
+
+<body>
+	<div layout:fragment="Mycontent">
+		<div class="container mt-5">
+			<div class="card">
+				<div class="card-header" th:if="${mode=='newPar'}"> Ajout des Reclamations </div>
+				
+				<div class="card-body">
+					<form th:action="@{saveReclamation}" method="post">
+					<div class="form-group">
+<label class="control-label" hidden>ID Parcours :</label>
+<input type="hidden" name="idrec" class="form-control"
+th:value="${reclamation.idrec}" />
+</div>
+<div class="form-group">
+<label class="control-label">type_rec :</label>
+<input type="text" name="type_rec" class="form-control"
+th:value="${reclamation.type_rec}" />
+
+</div>
+<div class="form-group">
+<label class="control-label">priorite :</label>
+<input type="text" name="priorite" class="form-control"
+th:value="${reclamation.priorite}" />
+<span th:errors=${reclamation.priorite} class="text-danger"> </span>
+</div>
+
+<div class="form-group">
+<label class="control-label">description :</label>
+<input type="text" name="description" class="form-control"
+th:value="${reclamation.description}" />
+<span th:errors=${reclamation.description} class="text-danger"> </span>
+</div>
+
+<div class="form-group">
+							<label class="control-label">Salle :</label> 
+							<select    type="text" name="salle" class="form-control" th:value="${reclamation.salle.ids}"  >
+								<option th:each="c:${salles}" th:if="${mode=='edit'}"
+									th:value="${c.ids}" th:text="${c.ids}"
+									th:selected="${ c.ids==reclamation.salle.ids}"></option>
+
+								<option th:each="c:${salles}" th:if="${mode=='new'}"
+									th:value="${c.ids}" th:text="${c.ids  +  c.type}"></option>
+							</select>
+						</div>
+<div>
+<button type="submit" class="btn btn-primary">Ajouter</button>
+</div>
+</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

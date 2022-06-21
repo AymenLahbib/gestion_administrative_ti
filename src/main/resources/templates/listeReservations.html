@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="template"
+	xmlns:sec=https://www.thymeleaf.org/thymeleaf-extras-springsecurity5>
+<link rel="stylesheet" type="text/css"
+	href="webjars/bootstrap/4.3.1/css/bootstrap.min.css" />
+<head>
+<meta charset="utf-8">
+<title>Liste des Reservations</title>
+</head>
+<body>
+	<div layout:fragment="Mycontent">
+		<div class="container mt-5">
+			<div class="card">
+				<div class="card-header">Liste des Reservations</div>
+				<div class="card-body">
+
+					
+					<table class="table table-striped">
+						<tr>
+							<th>ID Reservation</th>
+							<th>module</th>
+							<th> Nom Club </th>
+							<th> Salle </th>
+							<th>Date P</th>
+							<th>Date R</th>
+							<th> etat </th>
+							
+						</tr>
+						<tr th:each="s:${Reservations}">
+							<td th:text="${s.idres}"></td>
+								<td th:text="${s.module}"></td>
+							<
+							<td th:text="${s.nom_club}"></td>
+							<td th:text="${s.salle.type}"></td>
+							<td th:text="${s.dateP}"></td>
+							<td th:text="${s.dateR}"></td>
+							<td th:text="${s.etat}"></td>
+							
+							
+							
+						
+
+							<td sec:authorize="hasRole('ADMIN')"><a
+								class="btn btn-danger"
+								onclick="return confirm('Etes-vous sûr ?')"
+								th:href="@{supprimerReservation(id=${s.idres},
+                                page=${currentPage},size=${size})}">Supprimer</a></td>
+                                <td sec:authorize="hasAnyRole('SECRITAIRE','ADMIN')" ><a class="btn btn-success"th:href="@{modifierRes(id=${s.idres})}">accepter</a> </td>
+                                <td sec:authorize="hasAnyRole('SECRITAIRE','ADMIN')" ><a class="btn btn-info"th:href="@{refuserRes(id=${s.idres})}">refuser</a> </td>
+						</tr>
+					</table>
+					<ul class="nav nav-pills">
+						<li th:each="page,status:${pages}"><a
+							th:class="${status.index==currentPage?'btn btn-primary':'btn' }"
+							th:href="@{ ListeSpecilates(page=${status.index}, size=${size} ) }"
+							th:text="${status.index }"></a></li>
+					</ul>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="template">
+<link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" />
+
+<head>
+	<meta charset="utf-8">
+	<title>Ajout Rattrapages</title>
+</head>
+
+<body>
+	<div layout:fragment="Mycontent">
+		<div class="container mt-5">
+			<div class="card">
+				<div class="card-header" > Ajout des Rattrapages </div>
+				
+				<div class="card-body">
+					<form th:action="@{saveRattrapage}" method="post">
+					<div class="form-group">
+<label class="control-label" hidden>ID Parcours :</label>
+<input type="hidden" name="idrat" class="form-control"
+th:value="${rattrapage.idrat}" />
+</div>
+<div class="form-group">
+<label class="control-label">module :</label>
+<input type="text" name="module" class="form-control"
+th:value="${rattrapage.module}" />
+
+</div>
+
+<div class="form-group">
+							<label class="control-label">date  :</label>
+							<input type="date" name="dateEmbauche" class="form-control" th:value="${rattrapage.dateEmbauche}" />
+							<span th:errors=${rattrapage.dateEmbauche} class="text-danger"> </span>
+						</div>
+
+<div class="form-group">
+							<label class="control-label">Salle :</label> 
+							<select    type="text" name="salle" class="form-control" th:value="${rattrapage.salle.ids}"  >
+								<option th:each="c:${salles}" th:if="${mode=='edit'}"
+									th:value="${c.ids}" th:text="${c.ids}"
+									th:selected="${ c.ids==rattrapage.salle.ids}"></option>
+
+								<option th:each="c:${salles}" th:if="${mode=='new'}"
+									th:value="${c.ids}" th:text="${c.ids  +  c.type}"></option>
+							</select>
+						</div>
+
+<div class="form-group">
+							<label class="control-label">motif :</label> 
+							<select    type="text" name="motif" class="form-control" th:value="${rattrapage.motif}"  >
+								<option th:each="c:${motifs}" th:if="${mode=='edit'}"
+									th:value="${c.idMotif}" th:text="${c.nomMot}"
+									th:selected="${ c.idMotif==rattrapage.motif.idMotif}"></option>
+
+								<option th:each="c:${motifs}" th:if="${mode=='new'}"
+									th:value="${c.idMotif}" th:text="${c.nomMot }"></option>
+							</select>
+						</div>
+<div>
+<button type="submit" class="btn btn-primary">Ajouter</button>
+</div>
+</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
+
+
+
+
